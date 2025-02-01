@@ -3,17 +3,21 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle($request, Closure $next, $role)
     {
-        if (!Auth::check() || !Auth::user()->roles->contains('name', $role)) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+        if (!Auth::check()) {
+            return response('Unauthorized.', 401);
         }
 
-        return $next($request);
+        $user = Auth::user();
+        if ($user->roles()->where('name', $role)->exists()) {
+            return $next($request);
+        }
+
+        return response('Unauthorized.', 403);
     }
 }

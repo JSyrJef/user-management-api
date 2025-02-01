@@ -11,21 +11,22 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Ruta(publica)
+// Rutas públicas
 Route::post('register', [UserController::class, 'store']);
 Route::post('login', [UserController::class, 'login']);
-// Route::apiResource('users', UserController::class)->only(['store', 'index']);
 
-
-// Rutas protegidas con Sanctum y middleware CheckRole
+// Rutas protegidas con Sanctum
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('users', UserController::class)->except(['store', 'update']);
-    Route::apiResource('roles', RoleController::class);
-    Route::get('user-statistics', [UserStatisticsController::class, 'index']);
-});
+    // Rutas para admin
+    //Route::middleware('role:admin')->group(function () {
+        Route::apiResource('users', UserController::class)->except(['store']);
+        Route::apiResource('roles', RoleController::class);
+        Route::get('user-statistics', [UserStatisticsController::class, 'index']);
+    //});
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('users/{user}', [UserController::class, 'show']);
-    Route::put('users/{user}', [UserController::class, 'update']);
+    // Rutas para client
+    //Route::middleware('role:client')->group(function () {
+        Route::get('user/{user}', [UserController::class, 'show']);
+        Route::put('user/{user}', [UserController::class, 'update']);
+    //});
 });
-
