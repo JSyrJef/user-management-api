@@ -14,6 +14,7 @@ Route::get('/user', function (Request $request) {
 // Rutas públicas
 Route::post('register', [UserController::class, 'store']);
 Route::post('login', [UserController::class, 'login']);
+Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 // Rutas protegidas con Sanctum
 Route::middleware(['auth:sanctum'])->group(function () {

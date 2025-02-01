@@ -1,6 +1,13 @@
 # API Documentation
 
+
 ####  ⚠️ **REGISTER USER WITH ADMIN ROLE:**
+
+## Generate user from migration using seeder
+
+`php artisan migrate --seed`
+
+## alternative
 
 ## Create an Admin User with Tinker
 ### Step 1: Open Tinker
